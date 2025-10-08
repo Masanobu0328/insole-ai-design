@@ -1,0 +1,46 @@
+{
+  "meta": {
+    "version": "1.0.0",
+    "unit": "mm"
+  },
+  "id": "demo_basic",
+  "foot": {
+    "side": "right",
+    "length": 260.0,
+    "width": 100.0
+  },
+  "thickness": {
+    "base": 3.0,
+    "forefoot": 3.0,
+    "midfoot": 4.0,
+    "rearfoot": 5.0
+  },
+  "heel_cup": {
+    "depth": 14.0,
+    "rim_thickness": 3.0
+  },
+  "arch": {
+    "medial_arch_height": 16.0,
+    "arch_position_from_heel": 120.0,
+    "arch_width": 45.0
+  },
+  "local_mods": [
+    {
+      "name": "navicular",
+      "type": "add",
+      "amount": 5.0,
+      "x_from_heel": 150.0,
+      "y_from_center": 18.0,
+      "radius": 18.0
+    }
+  ],
+  "manufacturing": {
+    "printer": "QIDI",
+    "filament": "TPU",
+    "layer_height": 0.2
+  },
+  "outline": {
+    "path": "samples/foot_outline_demo.csv",
+    "format": "csv"
+  }
+}

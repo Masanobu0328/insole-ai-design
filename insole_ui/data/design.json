@@ -1,0 +1,18 @@
+{
+  "foot": {
+    "length": 260,
+    "width": 95
+  },
+  "arch": {
+    "navicular": 5,
+    "cuboid": 2,
+    "met1": 3,
+    "sustentaculum": 2,
+    "transverse": 1
+  },
+  "heel_cup": 8.0,
+  "base_thickness": 5.0,
+  "min_thickness": 1.8,
+  "sections": 11,
+  "width_samples": 31
+}

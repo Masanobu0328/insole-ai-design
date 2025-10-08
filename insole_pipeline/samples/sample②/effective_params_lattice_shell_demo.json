@@ -1,0 +1,14 @@
+{
+  "id": "ins_gui_v6_case",
+  "foot": { "side": "right", "length": 260.0 },
+  "thickness": { "base": 3.0 },
+  "arch": { "medial_arch_height": 8.0, "arch_position_from_heel": 120.0, "arch_width": 45.0 },
+  "heel_cup": { "depth": 10.0 },
+  "local_mods": [
+    { "name":"navicular", "type":"add", "amount":5.0, "x_from_heel":150.0, "y_from_center":18.0, "radius":18.0 },
+    { "name":"first_met_head", "type":"add", "amount":3.0, "x_from_heel":212.0, "y_from_center":25.0, "radius":16.0 }
+  ],
+  "edge_skive": { "enabled": true, "width": 4.0, "toe_length": 16.0, "heel_length": 14.0, "min_thickness": 0.8 },
+  "toe_heel_round": { "toe_bulb": 1.4, "heel_bulb": 1.0, "spread": 0.6 },
+  "micro_perfs": { "enabled": false, "mode": "dimple", "depth": 0.8, "diameter": 1.2, "pitch": 3.0, "margin": 4.0, "x_from": 0.22, "x_to": 0.98 }
+}

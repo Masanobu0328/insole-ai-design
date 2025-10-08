@@ -1,0 +1,181 @@
+# -*- coding: utf-8 -*-
+# Insole Generator GUI Macro (FreeCAD)
+import json, os, traceback
+from PySide import QtGui, QtCore
+import FreeCAD as App
+import FreeCADGui as Gui
+import Part, Mesh
+
+def load_outline_csv(path):
+    pts=[]
+    with open(path,'r',encoding='utf-8') as f:
+        header=f.readline()
+        for line in f:
+            line=line.strip()
+            if not line: continue
+            x,y = line.split(',')
+            pts.append((float(x), float(y)))
+    return pts
+
+def outline_to_mm(pts, length_mm, width_mm, side="right"):
+    sgn = 1.0 if str(side).lower()=="right" else -1.0
+    mm=[]
+    for x,y in pts:
+        X = x*float(length_mm)
+        Y = sgn*y*float(width_mm)
+        mm.append(App.Vector(X,Y,0))
+    if (mm[0]-mm[-1]).Length > 1e-6:
+        mm.append(mm[0])
+    return mm
+
+def make_face(vectors):
+    wire = Part.makePolygon(vectors)
+    return Part.Face(wire)
+
+def extrude(face, thk):
+    return face.extrude(App.Vector(0,0,thk))
+
+def add_local_mods(solid, params):
+    mods = params.get("local_mods", [])
+    result = solid
+    topZ = result.BoundBox.ZMax
+    for m in mods:
+        typ = m.get("type","add")
+        amt = float(m.get("amount",0.0))
+        rad = float(m.get("radius",10.0))
+        x   = float(m.get("x_from_heel",0.0))
+        y   = float(m.get("y_from_center",0.0))
+        cyl = Part.makeCylinder(rad, amt, App.Vector(x,y,topZ))
+        result = result.fuse(cyl) if typ=="add" else result.cut(cyl)
+        result = result.removeSplitter()
+    return result
+
+def add_medial_arch(solid, params):
+    arch = params.get("arch", {})
+    h = float(arch.get("medial_arch_height",0.0))
+    if h<=0: return solid
+    x0 = float(arch.get("arch_position_from_heel",120.0))
+    w  = float(arch.get("arch_width",45.0))
+    segs=5
+    rad0=w*0.5
+    res=solid
+    topZ=res.BoundBox.ZMax
+    for i in range(segs):
+        cx = x0 + (i - segs/2.0)*6.0
+        cy = (i - segs/2.0)*1.5
+        bump = Part.makeCylinder(rad0*(0.95**abs(i)), h/segs, App.Vector(cx,cy,topZ))
+        res = res.fuse(bump).removeSplitter()
+    return res
+
+def carve_heel_cup(solid, params):
+    hc = params.get("heel_cup", {})
+    depth = float(hc.get("depth",0.0))
+    if depth<=0: return solid
+    bb = solid.BoundBox
+    radius = max(18.0, min(32.0, depth*1.4))
+    cup_center = App.Vector(25.0, 0.0, bb.ZMax - depth*0.6)
+    sphere = Part.makeSphere(radius, cup_center)
+    res = solid.cut(sphere).removeSplitter()
+    return res
+
+def build_insole(doc, json_path, outline_path, out_stl=None):
+    with open(json_path,"r",encoding="utf-8") as f:
+        params = json.load(f)
+    foot = params.get("foot", {})
+    length = float(foot.get("length",260.0))
+    width  = float(foot.get("width",100.0))
+    side   = foot.get("side","right")
+    thk = float(params.get("thickness",{}).get("base",3.0))
+
+    pts_norm = load_outline_csv(outline_path)
+    pts_mm   = outline_to_mm(pts_norm, length, width, side)
+    face = make_face(pts_mm)
+    base = extrude(face, thk)
+
+    body = add_medial_arch(base, params)
+    body = add_local_mods(body, params)
+    body = carve_heel_cup(body, params)
+    body = body.removeSplitter()
+
+    part = doc.addObject("Part::Feature","Insole")
+    part.Shape = body
+    doc.recompute()
+
+    if out_stl:
+        mesh = Mesh.Mesh()
+        pts, facets = body.tessellate(0.5)
+        for f in facets:
+            a,b,c = f
+            v1=pts[a]; v2=pts[b]; v3=pts[c]
+            mesh.addFacet(v1, v2, v3)
+        mesh.write(out_stl)
+    return body
+
+class InsoleDialog(QtGui.QDialog):
+    def __init__(self,parent=None):
+        super(InsoleDialog,self).__init__(parent)
+        self.setWindowTitle("Insole Generator")
+        self.jsonEdit = QtGui.QLineEdit()
+        self.outlineEdit = QtGui.QLineEdit()
+        self.outSTLEdit = QtGui.QLineEdit()
+
+        btnJson = QtGui.QPushButton("JSONを選択")
+        btnOutl = QtGui.QPushButton("輪郭CSVを選択")
+        btnSTL  = QtGui.QPushButton("STL出力先...")
+
+        btnJson.clicked.connect(self.pickJson)
+        btnOutl.clicked.connect(self.pickOutline)
+        btnSTL.clicked.connect(self.pickSTL)
+
+        self.btnBuild = QtGui.QPushButton("生成（FreeCADに表示）")
+        self.btnExport= QtGui.QPushButton("生成＋STL書き出し")
+        self.btnBuild.clicked.connect(self.onBuild)
+        self.btnExport.clicked.connect(self.onExport)
+
+        form = QtGui.QFormLayout()
+        form.addRow("JSON:", self._hl(self.jsonEdit, btnJson))
+        form.addRow("輪郭CSV:", self._hl(self.outlineEdit, btnOutl))
+        form.addRow("STL出力:", self._hl(self.outSTLEdit, btnSTL))
+        v = QtGui.QVBoxLayout(self)
+        v.addLayout(form)
+        v.addWidget(self.btnBuild)
+        v.addWidget(self.btnExport)
+
+    def _hl(self, w1, w2):
+        h = QtGui.QHBoxLayout()
+        h.addWidget(w1); h.addWidget(w2)
+        wrap = QtGui.QWidget(); wrap.setLayout(h); return wrap
+
+    def pickJson(self):
+        fn,_ = QtGui.QFileDialog.getOpenFileName(self, "effective_params.json を選択", "", "JSON (*.json)")
+        if fn: self.jsonEdit.setText(fn)
+
+    def pickOutline(self):
+        fn,_ = QtGui.QFileDialog.getOpenFileName(self, "輪郭CSVを選択", "", "CSV (*.csv)")
+        if fn: self.outlineEdit.setText(fn)
+
+    def pickSTL(self):
+        fn,_ = QtGui.QFileDialog.getSaveFileName(self, "STL出力先", "", "STL (*.stl)")
+        if fn: self.outSTLEdit.setText(fn)
+
+    def onBuild(self):
+        try:
+            doc = App.ActiveDocument or App.newDocument("InsoleDoc")
+            build_insole(doc, self.jsonEdit.text(), self.outlineEdit.text(), None)
+            Gui.activeDocument().activeView().viewAxonometric()
+            Gui.SendMsgToActiveView("ViewFit")
+        except Exception as e:
+            QtGui.QMessageBox.critical(self, "エラー", traceback.format_exc())
+
+    def onExport(self):
+        try:
+            doc = App.ActiveDocument or App.newDocument("InsoleDoc")
+            build_insole(doc, self.jsonEdit.text(), self.outlineEdit.text(), self.outSTLEdit.text())
+            Gui.activeDocument().activeView().viewAxonometric()
+            Gui.SendMsgToActiveView("ViewFit")
+            QtGui.QMessageBox.information(self, "完了", "STLを書き出しました。")
+        except Exception as e:
+            QtGui.QMessageBox.critical(self, "エラー", traceback.format_exc())
+
+dlg = InsoleDialog()
+dlg.exec_()

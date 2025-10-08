@@ -1,0 +1,2 @@
+axis,z_available,z_cols_present,z_nan_ratio,steps_r,steps_l,thr_r,thr_l,period_frames_used,img_w,img_h,scale_cm_per_px
+z,True,True,0.0,"[184, 193, 211]","[202, 231]",247.2040027534961,279.328971068859,18.0,1920.0,1080.0,0.2

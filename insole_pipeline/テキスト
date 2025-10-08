@@ -1,0 +1,136 @@
+import bpy
+import bmesh
+import csv
+import json
+import math
+import numpy as np
+
+from mathutils import Vector
+from bpy.props import StringProperty
+from bpy.types import Operator
+
+
+# ======================================================
+# メイン処理
+# ======================================================
+def generate_insole(csv_path, json_path, out_path):
+    print("🦶 CSV:", csv_path)
+    print("⚙️ JSON:", json_path)
+
+    # ---------- CSV 読み込み ----------
+    pts = []
+    with open(csv_path, newline='', encoding='utf-8') as f:
+        r = csv.reader(f)
+        next(r, None)
+        for row in r:
+            if len(row) >= 2:
+                pts.append((float(row[0]), float(row[1])))
+    pts = np.array(pts)
+    print(f"点数: {len(pts)}")
+
+    # ---------- JSON 読み込み ----------
+    with open(json_path, "r", encoding="utf-8") as f:
+        params = json.load(f)
+
+    L = float(params.get("foot", {}).get("length", 260.0))
+    arch = params.get("arch", {})
+    arch_h = float(arch.get("medial_arch_height", 8.0))
+    arch_pos = float(arch.get("arch_position_from_heel", 120.0))
+
+    # ---------- 正規化 ----------
+    x_min, x_max = pts[:,0].min(), pts[:,0].max()
+    y_min, y_max = pts[:,1].min(), pts[:,1].max()
+    xs = (pts[:,0] - x_min) / (x_max - x_min)
+    ys = (pts[:,1] - (y_min + y_max)/2) / (y_max - y_min)
+    X = xs * L
+    Y = ys * (L * 0.4)
+
+    # ---------- 高さマップ ----------
+    def z_func(xn, yn):
+        arch_curve = arch_h * math.exp(-0.5 * ((xn - arch_pos/L)/0.12)**2) * math.exp(-0.5 * ((yn - 0.35)/0.35)**2)
+        heel = -8.0 * math.exp(-0.5 * (xn/0.15)**2)
+        return 5.0 + arch_curve + heel
+
+    grid_size_x = 60
+    grid_size_y = 30
+    Xg = np.linspace(X.min(), X.max(), grid_size_x)
+    Yg = np.linspace(Y.min(), Y.max(), grid_size_y)
+    XG, YG = np.meshgrid(Xg, Yg)
+    ZG = np.zeros_like(XG)
+    for i in range(grid_size_y):
+        for j in range(grid_size_x):
+            xn = XG[i,j]/L
+            yn = YG[i,j]/(L*0.4)
+            ZG[i,j] = z_func(xn, yn)
+
+    # ---------- メッシュ生成 ----------
+    mesh = bpy.data.meshes.new("InsoleMesh")
+    bm = bmesh.new()
+    verts = [[bm.verts.new((XG[i,j], YG[i,j], ZG[i,j])) for j in range(grid_size_x)] for i in range(grid_size_y)]
+    for i in range(grid_size_y - 1):
+        for j in range(grid_size_x - 1):
+            v1 = verts[i][j]
+            v2 = verts[i][j+1]
+            v3 = verts[i+1][j+1]
+            v4 = verts[i+1][j]
+            bm.faces.new([v1, v2, v3, v4])
+    bm.to_mesh(mesh)
+    bm.free()
+
+    obj = bpy.data.objects.new("Insole", mesh)
+    bpy.context.collection.objects.link(obj)
+
+    # ---------- 厚み付け ----------
+    solidify = obj.modifiers.new(name="Solidify", type='SOLIDIFY')
+    solidify.thickness = 3.0
+    bpy.context.view_layer.objects.active = obj
+    bpy.ops.object.modifier_apply(modifier="Solidify")
+
+    # ---------- 平滑化 ----------
+    subdiv = obj.modifiers.new(name="Subdivision", type='SUBSURF')
+    subdiv.levels = 2
+    bpy.ops.object.modifier_apply(modifier="Subdivision")
+
+    # ---------- STL出力 ----------
+    bpy.ops.export_mesh.stl(filepath=out_path, use_selection=False)
+    print("✅ Exported:", out_path)
+
+
+# ======================================================
+# Blender内UIでファイル選択
+# ======================================================
+class InsoleGeneratorOperator(bpy.types.Operator):
+    bl_idname = "insole.generate_ui"
+    bl_label = "Generate Insole (UI版)"
+    bl_options = {'REGISTER', 'UNDO'}
+
+    csv_path: StringProperty(name="CSV Path", subtype='FILE_PATH')
+    json_path: StringProperty(name="JSON Path", subtype='FILE_PATH')
+    out_path: StringProperty(name="STL Output", subtype='FILE_PATH')
+
+    def execute(self, context):
+        if not self.csv_path or not self.json_path or not self.out_path:
+            self.report({'ERROR'}, "ファイルがすべて選択されていません。")
+            return {'CANCELLED'}
+        generate_insole(self.csv_path, self.json_path, self.out_path)
+        self.report({'INFO'}, "✅ 完了: " + self.out_path)
+        return {'FINISHED'}
+
+
+def menu_func(self, context):
+    self.layout.operator(InsoleGeneratorOperator.bl_idname, text="Insole Generator (UI版)")
+
+
+def register():
+    bpy.utils.register_class(InsoleGeneratorOperator)
+    bpy.types.TOPBAR_MT_file_import.append(menu_func)
+
+
+def unregister():
+    bpy.utils.unregister_class(InsoleGeneratorOperator)
+    bpy.types.TOPBAR_MT_file_import.remove(menu_func)
+
+
+if __name__ == "__main__":
+    register()
+    bpy.ops.insole.generate_ui('INVOKE_DEFAULT')

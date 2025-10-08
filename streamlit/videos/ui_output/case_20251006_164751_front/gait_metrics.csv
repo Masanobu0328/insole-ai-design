@@ -1,0 +1,2 @@
+step_length_r,step_length_l,step_asymmetry,speed_norm,step_length_r_px,step_length_l_px,speed_px_s,step_length_r_cm,step_length_l_cm,speed_m_s,pelvis_sway,shoulder_diff_mean,shoulder_diff_std,heel_tilt_r_mean,heel_tilt_l_mean,heel_tilt_r_std,heel_tilt_l_std,knee_varus_valgus_r_mean,knee_varus_valgus_l_mean,ankle_pronation_r_mean,ankle_pronation_l_mean
+1.736703,2.781258,0.462401,0.010932,8.684,13.906,5.466,1.74,2.78,0.011,10.631797,4.226481,3.90801,0.068815,0.066315,0.061267,0.07915,177.226244,177.373971,164.04693,163.065396

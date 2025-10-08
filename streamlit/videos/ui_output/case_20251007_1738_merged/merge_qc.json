@@ -1,0 +1,480 @@
+{
+  "lag_applied_to_side": 90,
+  "frames": 370,
+  "columns": {
+    "frame": {
+      "source": "weighted",
+      "preferred": "front*",
+      "weights": {
+        "front": 0.6,
+        "side": 0.4
+      },
+      "front_avail_ratio": 1.0,
+      "side_avail_ratio": 0.7567567567567568
+    },
+    "hip_R_3d": {
+      "source": "weighted",
+      "preferred": "front*",
+      "weights": {
+        "front": 0.6,
+        "side": 0.4
+      },
+      "front_avail_ratio": 1.0,
+      "side_avail_ratio": 0.21891891891891893
+    },
+    "hip_R_xy": {
+      "source": "weighted",
+      "preferred": "front*",
+      "weights": {
+        "front": 0.6,
+        "side": 0.4
+      },
+      "front_avail_ratio": 1.0,
+      "side_avail_ratio": 0.21891891891891893
+    },
+    "hip_R_yz": {
+      "source": "weighted",
+      "preferred": "front*",
+      "weights": {
+        "front": 0.6,
+        "side": 0.4
+      },
+      "front_avail_ratio": 1.0,
+      "side_avail_ratio": 0.21891891891891893
+    },
+    "hip_R_xz": {
+      "source": "weighted",
+      "preferred": "front*",
+      "weights": {
+        "front": 0.6,
+        "side": 0.4
+      },
+      "front_avail_ratio": 1.0,
+      "side_avail_ratio": 0.21891891891891893
+    },
+    "knee_R_3d": {
+      "source": "weighted",
+      "preferred": "front*",
+      "weights": {
+        "front": 0.6,
+        "side": 0.4
+      },
+      "front_avail_ratio": 1.0,
+      "side_avail_ratio": 0.21891891891891893
+    },
+    "knee_R_xy": {
+      "source": "weighted",
+      "preferred": "front*",
+      "weights": {
+        "front": 0.6,
+        "side": 0.4
+      },
+      "front_avail_ratio": 1.0,
+      "side_avail_ratio": 0.21891891891891893
+    },
+    "knee_R_yz": {
+      "source": "weighted",
+      "preferred": "front*",
+      "weights": {
+        "front": 0.6,
+        "side": 0.4
+      },
+      "front_avail_ratio": 1.0,
+      "side_avail_ratio": 0.21891891891891893
+    },
+    "knee_R_xz": {
+      "source": "weighted",
+      "preferred": "front*",
+      "weights": {
+        "front": 0.6,
+        "side": 0.4
+      },
+      "front_avail_ratio": 1.0,
+      "side_avail_ratio": 0.21891891891891893
+    },
+    "ankle_R_3d": {
+      "source": "weighted",
+      "preferred": "front*",
+      "weights": {
+        "front": 0.6,
+        "side": 0.4
+      },
+      "front_avail_ratio": 1.0,
+      "side_avail_ratio": 0.21891891891891893
+    },
+    "ankle_R_xy": {
+      "source": "weighted",
+      "preferred": "front*",
+      "weights": {
+        "front": 0.6,
+        "side": 0.4
+      },
+      "front_avail_ratio": 1.0,
+      "side_avail_ratio": 0.21891891891891893
+    },
+    "ankle_R_yz": {
+      "source": "weighted",
+      "preferred": "front*",
+      "weights": {
+        "front": 0.6,
+        "side": 0.4
+      },
+      "front_avail_ratio": 1.0,
+      "side_avail_ratio": 0.21891891891891893
+    },
+    "ankle_R_xz": {
+      "source": "weighted",
+      "preferred": "front*",
+      "weights": {
+        "front": 0.6,
+        "side": 0.4
+      },
+      "front_avail_ratio": 1.0,
+      "side_avail_ratio": 0.21891891891891893
+    },
+    "hip_L_3d": {
+      "source": "weighted",
+      "preferred": "front*",
+      "weights": {
+        "front": 0.6,
+        "side": 0.4
+      },
+      "front_avail_ratio": 1.0,
+      "side_avail_ratio": 0.21891891891891893
+    },
+    "hip_L_xy": {
+      "source": "weighted",
+      "preferred": "front*",
+      "weights": {
+        "front": 0.6,
+        "side": 0.4
+      },
+      "front_avail_ratio": 1.0,
+      "side_avail_ratio": 0.21891891891891893
+    },
+    "hip_L_yz": {
+      "source": "weighted",
+      "preferred": "front*",
+      "weights": {
+        "front": 0.6,
+        "side": 0.4
+      },
+      "front_avail_ratio": 1.0,
+      "side_avail_ratio": 0.21891891891891893
+    },
+    "hip_L_xz": {
+      "source": "weighted",
+      "preferred": "front*",
+      "weights": {
+        "front": 0.6,
+        "side": 0.4
+      },
+      "front_avail_ratio": 1.0,
+      "side_avail_ratio": 0.21891891891891893
+    },
+    "knee_L_3d": {
+      "source": "weighted",
+      "preferred": "front*",
+      "weights": {
+        "front": 0.6,
+        "side": 0.4
+      },
+      "front_avail_ratio": 1.0,
+      "side_avail_ratio": 0.21891891891891893
+    },
+    "knee_L_xy": {
+      "source": "weighted",
+      "preferred": "front*",
+      "weights": {
+        "front": 0.6,
+        "side": 0.4
+      },
+      "front_avail_ratio": 1.0,
+      "side_avail_ratio": 0.21891891891891893
+    },
+    "knee_L_yz": {
+      "source": "weighted",
+      "preferred": "front*",
+      "weights": {
+        "front": 0.6,
+        "side": 0.4
+      },
+      "front_avail_ratio": 1.0,
+      "side_avail_ratio": 0.21891891891891893
+    },
+    "knee_L_xz": {
+      "source": "weighted",
+      "preferred": "front*",
+      "weights": {
+        "front": 0.6,
+        "side": 0.4
+      },
+      "front_avail_ratio": 1.0,
+      "side_avail_ratio": 0.21891891891891893
+    },
+    "ankle_L_3d": {
+      "source": "weighted",
+      "preferred": "front*",
+      "weights": {
+        "front": 0.6,
+        "side": 0.4
+      },
+      "front_avail_ratio": 1.0,
+      "side_avail_ratio": 0.21891891891891893
+    },
+    "ankle_L_xy": {
+      "source": "weighted",
+      "preferred": "front*",
+      "weights": {
+        "front": 0.6,
+        "side": 0.4
+      },
+      "front_avail_ratio": 1.0,
+      "side_avail_ratio": 0.21891891891891893
+    },
+    "ankle_L_yz": {
+      "source": "weighted",
+      "preferred": "front*",
+      "weights": {
+        "front": 0.6,
+        "side": 0.4
+      },
+      "front_avail_ratio": 1.0,
+      "side_avail_ratio": 0.21891891891891893
+    },
+    "ankle_L_xz": {
+      "source": "weighted",
+      "preferred": "front*",
+      "weights": {
+        "front": 0.6,
+        "side": 0.4
+      },
+      "front_avail_ratio": 1.0,
+      "side_avail_ratio": 0.21891891891891893
+    },
+    "pelvic_yz": {
+      "source": "weighted",
+      "preferred": "front*",
+      "weights": {
+        "front": 0.6,
+        "side": 0.4
+      },
+      "front_avail_ratio": 1.0,
+      "side_avail_ratio": 0.21891891891891893
+    },
+    "pelvic_xz": {
+      "source": "weighted",
+      "preferred": "front*",
+      "weights": {
+        "front": 0.6,
+        "side": 0.4
+      },
+      "front_avail_ratio": 1.0,
+      "side_avail_ratio": 0.21891891891891893
+    },
+    "28_x": {
+      "source": "weighted",
+      "preferred": "front*",
+      "weights": {
+        "front": 0.6,
+        "side": 0.4
+      },
+      "front_avail_ratio": 1.0,
+      "side_avail_ratio": 0.21891891891891893
+    },
+    "28_y": {
+      "source": "weighted",
+      "preferred": "side",
+      "weights": {
+        "front": 0.3,
+        "side": 0.7
+      },
+      "front_avail_ratio": 1.0,
+      "side_avail_ratio": 0.21891891891891893
+    },
+    "28_z": {
+      "source": "weighted",
+      "preferred": "side",
+      "weights": {
+        "front": 0.3,
+        "side": 0.7
+      },
+      "front_avail_ratio": 1.0,
+      "side_avail_ratio": 0.21891891891891893
+    },
+    "27_x": {
+      "source": "weighted",
+      "preferred": "front*",
+      "weights": {
+        "front": 0.6,
+        "side": 0.4
+      },
+      "front_avail_ratio": 1.0,
+      "side_avail_ratio": 0.21891891891891893
+    },
+    "27_y": {
+      "source": "weighted",
+      "preferred": "side",
+      "weights": {
+        "front": 0.3,
+        "side": 0.7
+      },
+      "front_avail_ratio": 1.0,
+      "side_avail_ratio": 0.21891891891891893
+    },
+    "27_z": {
+      "source": "weighted",
+      "preferred": "side",
+      "weights": {
+        "front": 0.3,
+        "side": 0.7
+      },
+      "front_avail_ratio": 1.0,
+      "side_avail_ratio": 0.21891891891891893
+    },
+    "24_x": {
+      "source": "weighted",
+      "preferred": "front*",
+      "weights": {
+        "front": 0.6,
+        "side": 0.4
+      },
+      "front_avail_ratio": 1.0,
+      "side_avail_ratio": 0.21891891891891893
+    },
+    "23_x": {
+      "source": "weighted",
+      "preferred": "front*",
+      "weights": {
+        "front": 0.6,
+        "side": 0.4
+      },
+      "front_avail_ratio": 1.0,
+      "side_avail_ratio": 0.21891891891891893
+    },
+    "11_y": {
+      "source": "weighted",
+      "preferred": "front*",
+      "weights": {
+        "front": 0.6,
+        "side": 0.4
+      },
+      "front_avail_ratio": 1.0,
+      "side_avail_ratio": 0.21891891891891893
+    },
+    "12_y": {
+      "source": "weighted",
+      "preferred": "front*",
+      "weights": {
+        "front": 0.6,
+        "side": 0.4
+      },
+      "front_avail_ratio": 1.0,
+      "side_avail_ratio": 0.21891891891891893
+    },
+    "pelvis_z": {
+      "source": "weighted",
+      "preferred": "front*",
+      "weights": {
+        "front": 0.6,
+        "side": 0.4
+      },
+      "front_avail_ratio": 1.0,
+      "side_avail_ratio": 0.7567567567567568
+    },
+    "knee_xy_r": {
+      "source": "weighted",
+      "preferred": "front*",
+      "weights": {
+        "front": 0.6,
+        "side": 0.4
+      },
+      "front_avail_ratio": 1.0,
+      "side_avail_ratio": 0.21891891891891893
+    },
+    "knee_xy_l": {
+      "source": "weighted",
+      "preferred": "front*",
+      "weights": {
+        "front": 0.6,
+        "side": 0.4
+      },
+      "front_avail_ratio": 1.0,
+      "side_avail_ratio": 0.21891891891891893
+    },
+    "ankle_xy_r": {
+      "source": "weighted",
+      "preferred": "front*",
+      "weights": {
+        "front": 0.6,
+        "side": 0.4
+      },
+      "front_avail_ratio": 1.0,
+      "side_avail_ratio": 0.21891891891891893
+    },
+    "ankle_xy_l": {
+      "source": "weighted",
+      "preferred": "front*",
+      "weights": {
+        "front": 0.6,
+        "side": 0.4
+      },
+      "front_avail_ratio": 1.0,
+      "side_avail_ratio": 0.21891891891891893
+    },
+    "knee_xy": {
+      "source": "weighted",
+      "preferred": "front*",
+      "weights": {
+        "front": 0.6,
+        "side": 0.4
+      },
+      "front_avail_ratio": 1.0,
+      "side_avail_ratio": 0.21891891891891893
+    },
+    "ankle_xy": {
+      "source": "weighted",
+      "preferred": "front*",
+      "weights": {
+        "front": 0.6,
+        "side": 0.4
+      },
+      "front_avail_ratio": 1.0,
+      "side_avail_ratio": 0.21891891891891893
+    },
+    "img_w": {
+      "source": "weighted",
+      "preferred": "front*",
+      "weights": {
+        "front": 0.6,
+        "side": 0.4
+      },
+      "front_avail_ratio": 1.0,
+      "side_avail_ratio": 0.7567567567567568
+    },
+    "img_h": {
+      "source": "weighted",
+      "preferred": "front*",
+      "weights": {
+        "front": 0.6,
+        "side": 0.4
+      },
+      "front_avail_ratio": 1.0,
+      "side_avail_ratio": 0.7567567567567568
+    },
+    "scale_cm_per_px": {
+      "source": "weighted",
+      "preferred": "front*",
+      "weights": {
+        "front": 0.6,
+        "side": 0.4
+      },
+      "front_avail_ratio": 1.0,
+      "side_avail_ratio": 0.7567567567567568
+    }
+  },
+  "signals_used": {
+    "front_signal": "27_y",
+    "side_signal": "27_y"
+  }
+}
